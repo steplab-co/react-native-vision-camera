@@ -21,14 +21,20 @@ extension CameraSession {
 
     do {
       let audioSession = AVAudioSession.sharedInstance()
-
-      try audioSession.updateCategory(AVAudioSession.Category.playAndRecord,
+   
+    
+        try audioSession.updateCategory(AVAudioSession.Category.playAndRecord,
                                       mode: .videoRecording,
                                       options: [.mixWithOthers,
+                                                .allowBluetooth,
                                                 .allowBluetoothA2DP,
                                                 .defaultToSpeaker,
                                                 .allowAirPlay])
-
+      
+        print("--------- audo session available inputs begin ---------")
+        print(audioSession.availableInputs)
+        print("--------- audo session available inputs begin ---------")
+      
       if #available(iOS 14.5, *) {
         // prevents the audio session from being interrupted by a phone call
         try audioSession.setPrefersNoInterruptionsFromSystemAlerts(true)
@@ -38,6 +44,8 @@ extension CameraSession {
         // allow system sounds (notifications, calls, music) to play while recording
         try audioSession.setAllowHapticsAndSystemSoundsDuringRecording(true)
       }
+      
+
 
       audioCaptureSession.startRunning()
       VisionLogger.log(level: .info, message: "Audio Session activated!")
